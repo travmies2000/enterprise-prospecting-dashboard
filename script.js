@@ -1,32 +1,31 @@
-const WEBHOOK_URL = 'YOUR_GOOGLE_SHEET_WEBHOOK_URL';
+let allInquiries = []; // Global store
 
 async function initDashboard() {
-    const response = await fetch(WEBHOOK_URL);
-    const data = await response.json(); // Assumes data format: { labels: [], values: [] }
+    const response = await fetch('YOUR_GOOGLE_SHEET_WEBHOOK_URL');
+    allInquiries = await response.json(); 
+    renderList(allInquiries);
+}
 
-    const ctx = document.getElementById('myChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: data.labels, // e.g., ["Week 1", "Week 2"]
-            datasets: [{
-                label: 'Inquiries per Week',
-                data: data.values, // e.g., [5, 12]
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                borderColor: 'rgba(255, 255, 255, 0.5)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
-            },
-            plugins: { legend: { labels: { color: 'white' } } }
-        }
+function renderList(data) {
+    const display = document.getElementById('data-display');
+    display.innerHTML = data.map(guest => `
+        <div class="guest-card">
+            <p>${guest.name} - <strong>${guest.status}</strong></p>
+        </div>
+    `).join('');
+}
+
+function filterData() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const statusTerm = document.getElementById('statusFilter').value;
+
+    const filtered = allInquiries.filter(guest => {
+        const matchesSearch = guest.name.toLowerCase().includes(searchTerm);
+        const matchesStatus = statusTerm === 'All' || guest.status === statusTerm;
+        return matchesSearch && matchesStatus;
     });
+
+    renderList(filtered);
 }
 
 initDashboard();
