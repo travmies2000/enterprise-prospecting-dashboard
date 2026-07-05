@@ -1,14 +1,30 @@
 body {
     background: #0f172a;
     color: white;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
 }
 .dashboard-container {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 2rem;
+    max-width: 800px;
     margin: 2rem auto;
-    width: 80%;
+}
+.action-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
