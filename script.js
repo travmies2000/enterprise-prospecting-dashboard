@@ -1,42 +1,32 @@
-// Replace with your actual Google Sheet Webhook URL
 const WEBHOOK_URL = 'YOUR_GOOGLE_SHEET_WEBHOOK_URL';
-const CONFIRMATION_WEBHOOK = 'YOUR_ZAPIER_OR_MAKE_WEBHOOK_URL';
 
-async function fetchGuestData() {
-    try {
-        const response = await fetch(WEBHOOK_URL);
-        const data = await response.json();
-        const display = document.getElementById('data-display');
-        
-        display.innerHTML = `<p>Active Inquiries: ${data.length}</p>`;
-        
-        // Example: Adding an action button for each inquiry
-        data.forEach(guest => {
-            display.innerHTML += `
-                <div class="guest-card">
-                    <p>Guest: ${guest.name}</p>
-                    <button class="action-btn" onclick="sendGuestConfirmation('${guest.email}')">
-                        Send Confirmation
-                    </button>
-                </div>
-            `;
-        });
-    } catch (error) {
-        document.getElementById('data-display').innerText = 'Unable to load data.';
-    }
+async function initDashboard() {
+    const response = await fetch(WEBHOOK_URL);
+    const data = await response.json(); // Assumes data format: { labels: [], values: [] }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.labels, // e.g., ["Week 1", "Week 2"]
+            datasets: [{
+                label: 'Inquiries per Week',
+                data: data.values, // e.g., [5, 12]
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+            },
+            plugins: { legend: { labels: { color: 'white' } } }
+        }
+    });
 }
 
-async function sendGuestConfirmation(guestEmail) {
-    try {
-        const response = await fetch(CONFIRMATION_WEBHOOK, {
-            method: 'POST',
-            body: JSON.stringify({ email: guestEmail, action: 'send_confirmation' }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (response.ok) alert('Confirmation sent successfully!');
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-fetchGuestData();
+initDashboard();
