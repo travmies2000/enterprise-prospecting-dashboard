@@ -1,0 +1,14 @@
+body {
+    background: #0f172a;
+    color: white;
+    font-family: sans-serif;
+}
+.dashboard-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 80%;
+}
