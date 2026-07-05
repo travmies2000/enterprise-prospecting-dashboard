@@ -7,24 +7,26 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1>Prospecting Overview</h1>
-        
-        <!-- Smart-Filter Interface -->
-        <div class="filter-bar">
-            <input type="text" id="searchInput" placeholder="Search guests..." onkeyup="filterData()">
-            <select id="statusFilter" onchange="filterData()">
-                <option value="All">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="Followed-up">Followed-up</option>
-            </select>
+    <div class="dashboard-grid">
+        <div class="main-content">
+            <h1>Prospecting Overview</h1>
+            <div class="filter-bar">
+                <input type="text" id="searchInput" placeholder="Search guests..." onkeyup="filterData()">
+                <select id="statusFilter" onchange="filterData()">
+                    <option value="All">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Followed-up">Followed-up</option>
+                </select>
+            </div>
+            <div class="chart-container"><canvas id="myChart"></canvas></div>
+            <div id="data-display"></div>
         </div>
 
-        <div class="chart-container" style="position: relative; height:300px; width:100%">
-            <canvas id="myChart"></canvas>
+        <!-- Automation Logs Side Panel -->
+        <div class="side-panel">
+            <h3>Automation Logs</h3>
+            <div id="logs-display">Loading system status...</div>
         </div>
-
-        <div id="data-display"></div>
     </div>
     <script src="script.js"></script>
 </body>
