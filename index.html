@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>Enterprise Prospecting Dashboard</title>
-    <!-- Include Chart.js from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <h1>Prospecting Overview</h1>
         
-        <!-- Chart Canvas -->
+        <!-- Smart-Filter Interface -->
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search guests..." onkeyup="filterData()">
+            <select id="statusFilter" onchange="filterData()">
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Followed-up">Followed-up</option>
+            </select>
+        </div>
+
         <div class="chart-container" style="position: relative; height:300px; width:100%">
             <canvas id="myChart"></canvas>
         </div>
