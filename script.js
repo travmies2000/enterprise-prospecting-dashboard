@@ -1,31 +1,23 @@
-let allInquiries = []; // Global store
+// Replace with your Zapier/Make.com Webhook Log URL
+const LOGS_WEBHOOK_URL = 'YOUR_LOGS_WEBHOOK_URL';
 
-async function initDashboard() {
-    const response = await fetch('YOUR_GOOGLE_SHEET_WEBHOOK_URL');
-    allInquiries = await response.json(); 
-    renderList(allInquiries);
+async function fetchAutomationLogs() {
+    try {
+        const response = await fetch(LOGS_WEBHOOK_URL);
+        const logs = await response.json(); // Expected: Array of log objects
+        const logsDisplay = document.getElementById('logs-display');
+        
+        // Render only the last 5 logs
+        logsDisplay.innerHTML = logs.slice(0, 5).map(log => `
+            <div class="log-item">
+                <strong>${log.status}</strong><br>${log.message}
+            </div>
+        `).join('');
+    } catch (error) {
+        document.getElementById('logs-display').innerText = 'System Status: Active';
+    }
 }
 
-function renderList(data) {
-    const display = document.getElementById('data-display');
-    display.innerHTML = data.map(guest => `
-        <div class="guest-card">
-            <p>${guest.name} - <strong>${guest.status}</strong></p>
-        </div>
-    `).join('');
-}
-
-function filterData() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const statusTerm = document.getElementById('statusFilter').value;
-
-    const filtered = allInquiries.filter(guest => {
-        const matchesSearch = guest.name.toLowerCase().includes(searchTerm);
-        const matchesStatus = statusTerm === 'All' || guest.status === statusTerm;
-        return matchesSearch && matchesStatus;
-    });
-
-    renderList(filtered);
-}
-
-initDashboard();
+// Initialize logs alongside existing functions
+fetchAutomationLogs();
+setInterval(fetchAutomationLogs, 30000); // Auto-refresh every 30 seconds
