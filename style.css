@@ -1,24 +1,50 @@
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 20px;
+:root {
+    --bg-dark: #09090b;
+    --card-bg: rgba(24, 24, 27, 0.6);
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #3b82f6;
 }
-.side-panel {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 1.5rem;
-    height: fit-content;
+
+body {
+    background-color: var(--bg-dark);
+    color: #f4f4f5;
+    font-family: 'Inter', -apple-system, sans-serif;
+    margin: 0;
+    padding: 40px;
 }
-.log-item {
-    font-size: 0.85rem;
-    margin-bottom: 10px;
-    border-left: 2px solid rgba(255, 255, 255, 0.3);
-    padding-left: 10px;
-    color: #cbd5e1;
+
+.dashboard-container {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
-/* Ensure existing styles from previous steps remain... */
+
+h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 24px; letter-spacing: -0.025em; }
+
+/* Enhanced input fields */
+.filter-bar input, .filter-bar select {
+    background: #18181b;
+    border: 1px solid var(--border);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: border 0.2s;
+}
+
+.filter-bar input:focus { outline: none; border-color: var(--accent); }
+
+.action-btn {
+    background: var(--accent);
+    color: white;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.action-btn:hover { opacity: 0.9; }
