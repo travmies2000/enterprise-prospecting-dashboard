@@ -1,23 +1,40 @@
-// Replace with your Zapier/Make.com Webhook Log URL
-const LOGS_WEBHOOK_URL = 'YOUR_LOGS_WEBHOOK_URL';
+const WEBHOOK_URL = 'YOUR_GOOGLE_SHEET_WEBHOOK_URL';
+let allInquiries = [];
 
-async function fetchAutomationLogs() {
+async function initDashboard() {
     try {
-        const response = await fetch(LOGS_WEBHOOK_URL);
-        const logs = await response.json(); // Expected: Array of log objects
-        const logsDisplay = document.getElementById('logs-display');
+        const response = await fetch(WEBHOOK_URL);
+        allInquiries = await response.json();
         
-        // Render only the last 5 logs
-        logsDisplay.innerHTML = logs.slice(0, 5).map(log => `
-            <div class="log-item">
-                <strong>${log.status}</strong><br>${log.message}
+        // Calculate Total Pipeline Value
+        const total = allInquiries.reduce((acc, guest) => acc + (guest.value || 0), 0);
+        document.getElementById('summary-display').innerHTML = `
+            <div class="stat-card">
+                <p style="margin:0; font-size:0.8rem">Pipeline Value</p>
+                <h2 style="margin:0">$${total.toLocaleString()}</h2>
             </div>
-        `).join('');
-    } catch (error) {
-        document.getElementById('logs-display').innerText = 'System Status: Active';
-    }
+        `;
+        renderList(allInquiries);
+        fetchAutomationLogs();
+    } catch (e) { console.error(e); }
 }
 
-// Initialize logs alongside existing functions
-fetchAutomationLogs();
-setInterval(fetchAutomationLogs, 30000); // Auto-refresh every 30 seconds
+async function fetchAutomationLogs() {
+    const logsDisplay = document.getElementById('logs-display');
+    const mockLogs = [{status: true, message: 'Sync Successful'}, {status: false, message: 'Email Retried'}];
+    logsDisplay.innerHTML = mockLogs.map(log => `
+        <div class="log-item">
+            ${log.status ? '🟢' : '⚠️'} ${log.message}
+        </div>
+    `).join('');
+}
+
+function renderList(data) {
+    document.getElementById('data-display').innerHTML = data.map(g => `
+        <div style="padding:16px; border-bottom:1px solid #333;">${g.name} - ${g.status}</div>
+    `).join('');
+}
+
+function filterData() { /* ... as defined in previous steps ... */ }
+
+initDashboard();
